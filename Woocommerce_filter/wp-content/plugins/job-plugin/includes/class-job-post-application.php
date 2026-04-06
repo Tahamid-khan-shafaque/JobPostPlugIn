@@ -187,8 +187,7 @@ class Job_Post_Application {
                 <?php 
                 $dynamic_fields = get_option('jpm_dynamic_fields', []);
                 if (is_array($dynamic_fields) && !empty($dynamic_fields)) :
-                    $count = 0;
-                    echo '<div class="jpm-form-row">';
+                    echo '<div class="jpm-form-grid">';
                     
                     foreach ($dynamic_fields as $field) :
                         $system_key = isset($field['system_key']) ? $field['system_key'] : '';
@@ -196,58 +195,33 @@ class Job_Post_Application {
                         $req_star = !empty($field['required']) ? '<span class="jpm-required">*</span>' : '';
                         $req_attr = !empty($field['required']) ? 'required' : '';
                         
-                        // Handle full-width locked components
-                        if ($system_key === 'core_cv') {
-                            if ($count % 2 !== 0) {
-                                echo '<div class="jpm-filter-group jpm-app-group jpm-desktop-spacer"></div></div><div class="jpm-form-row">';
-                                $count++;
-                            }
-                            ?>
-                            <div class="jpm-filter-group jpm-app-group jpm-file-group">
-                                <label><?php echo $label; ?> <span class="jpm-required">*</span></label>
-                                <div class="jpm-custom-file-upload">
-                                    <input type="file" name="app_cv" id="jpm_app_cv" accept=".pdf,.doc,.docx" required>
-                                    <label for="jpm_app_cv" class="jpm-file-label">
-                                        <span class="jpm-file-text"><strong>Click to browse</strong> or drag and drop a file</span>
-                                        <span class="jpm-file-hint" style="display:block; font-size:0.85rem; color:#94a3b8; margin-top:8px;">Maximum file size: 10MB (PDF, DOC, DOCX)</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <?php
-                            $count += 2;
-                            continue;
-                        }
-
-                        if ($system_key === 'core_message') {
-                            if ($count % 2 !== 0) {
-                                echo '<div class="jpm-filter-group jpm-app-group jpm-desktop-spacer"></div></div><div class="jpm-form-row">';
-                                $count++;
-                            }
-                            ?>
-                            <div class="jpm-filter-group jpm-app-group">
-                                <label><?php echo $label; ?> <span class="jpm-required">*</span></label>
-                                <textarea name="app_message" rows="5" required></textarea>
-                            </div>
-                            <?php
-                            $count += 2;
-                            continue;
-                        }
-
-                        // Handle standard 50% grid items dynamically sequentially
-                        if ($count > 0 && $count % 2 == 0) {
-                            echo '</div><div class="jpm-form-row">';
-                        }
-
                         $name_attr = '';
                         if ($system_key === 'core_name') $name_attr = 'name="app_name"';
                         elseif ($system_key === 'core_email') $name_attr = 'name="app_email"';
                         elseif ($system_key === 'core_phone') $name_attr = 'name="app_phone"';
                         else $name_attr = 'name="custom_' . md5($label) . '"';
+
+                        if ($system_key === 'core_cv') :
                         ?>
+                            <div class="jpm-filter-group jpm-app-group jpm-file-group">
+                                <label><?php echo $label; ?> <span class="jpm-required">*</span></label>
+                                <div class="jpm-custom-file-upload">
+                                    <input type="file" name="app_cv" id="jpm_app_cv" accept=".pdf,.doc,.docx" required>
+                                    <label for="jpm_app_cv" class="jpm-file-label" style="min-height: 120px; padding: 20px;">
+                                        <span class="jpm-file-text"><strong>Click to browse</strong> or drag and drop a file</span>
+                                        <span class="jpm-file-hint" style="display:block; font-size:0.85rem; color:#94a3b8; margin-top:8px;">Max: 10MB</span>
+                                    </label>
+                                </div>
+                            </div>
+                        <?php
+                            continue;
+                        endif;
+                        ?>
+
                         <div class="jpm-filter-group jpm-app-group">
                             <label><?php echo $label . ' ' . $req_star; ?></label>
                             <?php if (isset($field['type']) && $field['type'] === 'textarea') : ?>
-                                <textarea <?php echo $name_attr; ?> <?php echo $req_attr; ?> rows="3"></textarea>
+                                <textarea <?php echo $name_attr; ?> <?php echo $req_attr; ?> rows="5"></textarea>
                             <?php elseif (isset($field['type']) && $field['type'] === 'email') : ?>
                                 <input type="email" <?php echo $name_attr; ?> <?php echo $req_attr; ?>>
                             <?php else : ?>
@@ -255,12 +229,8 @@ class Job_Post_Application {
                             <?php endif; ?>
                         </div>
                         <?php
-                        $count++;
                     endforeach;
                     
-                    if ($count % 2 !== 0) {
-                        echo '<div class="jpm-filter-group jpm-app-group jpm-desktop-spacer"></div>';
-                    }
                     echo '</div>';
                 endif; 
                 ?>

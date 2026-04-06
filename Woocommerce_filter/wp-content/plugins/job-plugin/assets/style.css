@@ -287,14 +287,14 @@
     font-size: 1.1rem;
 }
 
-.jpm-form-row {
-    display: flex;
+.jpm-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 25px;
     margin-bottom: 25px;
 }
 
-.jpm-form-row .jpm-app-group {
-    flex: 1;
+.jpm-form-grid .jpm-app-group {
     margin-bottom: 0;
 }
 
@@ -447,9 +447,9 @@
         padding: 20px;
     }
 
-    .jpm-form-row {
-        flex-direction: column;
-        gap: 0;
+    .jpm-form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 
     .jpm-desktop-spacer {

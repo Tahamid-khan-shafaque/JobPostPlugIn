@@ -81,6 +81,8 @@ class Job_Post_Settings {
                             <th style="font-weight:bold;">Options</th>
                             <th></th>
                         </tr>
+                    </thead>
+                    <tbody id="jpm-fields-container">
                         <!-- Unified Master Layout Fields -->
                         <?php foreach ( $fields as $index => $field ) : ?>
                             <tr class="jpm-field-row" style="background:#ffffff; border-bottom:1px solid #ddd; cursor:move;">
